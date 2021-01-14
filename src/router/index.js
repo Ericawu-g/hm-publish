@@ -5,6 +5,7 @@ import Login from '@/views/login'
 import Layout from '@/views/layout'
 import Home from '@/views/home'
 import Article from '@/views/article'
+import Image from '@/views/image'
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
         path: '/article',
         name: 'article',
         component: Article
+      },
+      {
+        path: '/image',
+        name: 'image',
+        component: Image
       }
     ]
   }
