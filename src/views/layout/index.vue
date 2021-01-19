@@ -1,7 +1,7 @@
 <template>
   <div class="layout-container">
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="auto">
        <app-aside :is-collapse="isCollapse"/>
       </el-aside>
       <el-container>
@@ -44,6 +44,7 @@
 <script>
 import AppAside from './components/aside'
 import { getUserProfile } from '@/api/user'
+import globalBus from '@/utils/global-bus'
 
 export default {
   name: 'LayoutIndex',
@@ -58,6 +59,10 @@ export default {
   },
   created () {
     this.loadUserInfo()
+    globalBus.$on('update-user', data => {
+      this.user.name = data.name
+      this.user.photo = data.photo
+    })
   },
   methods: {
     loadUserInfo () {

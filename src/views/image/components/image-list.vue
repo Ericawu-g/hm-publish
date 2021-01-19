@@ -75,17 +75,29 @@
     <el-dialog
       title="上传素材"
       :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
       append-to-body
     >
       <el-upload
-        class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
         :show-file-list="false"
+        class="upload-demo"
+        drag
+        action="http://api-toutiao-web.itheima.net/mp/v1_0/user/images"
+        multiple
+        name="image"
+        :headers="uploadHeaders"
+        :on-success="uploadSuccess"
       >
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      <!-- <el-upload
+        class="upload-demo"
+        drag
+        name="image"
+        :http-request="uploadImageURL"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        multiple
+      > -->
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </el-dialog>
   </div>
@@ -105,13 +117,18 @@ export default {
     }
   },
   data () {
+    const user = JSON.parse(window.localStorage.getItem('user'))
     return {
       totalCount: 0, // 文章总条数
       pageSize: 10, // 每页数量
       page: 1, // 默认第一页
       collect: false, // 默认查询全部图片
       images: [], // 图片素材列表
-      dialogVisible: false // 是否显示添加素材对话框
+      dialogVisible: false, // 是否显示添加素材对话框
+      uploadHeaders: {
+        Authorization: `Bearer ${user.token}`
+      },
+      loading: false // 表单数据加载中loading
     }
   },
   created () {
@@ -163,13 +180,26 @@ export default {
         image.loading = false
       })
     },
-    handleClose (done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-        })
-        .catch(_ => {})
+    uploadSuccess () {
+      // 关闭对话框
+      this.dialogVisible = false
+
+      // 更新素材列表
+      this.loadImages(this.page)
+
+      this.$message({
+        type: 'success',
+        message: '上传成功'
+      })
     }
+    // uploadImageURL (params) {
+    //   const file = params.file
+    //   const formData = new FormData()
+    //   formData.append('file', file)
+    //   uploadImage(formData).then(res => {
+    //     console.log(res)
+    //   })
+    // }
   }
 }
 </script>

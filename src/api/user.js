@@ -41,3 +41,26 @@ export const collectImages = (imageId, data) => {
     data
   })
 }
+
+// 编辑用户头像
+export const updateUserPhoto = (photo) => {
+  return request({
+    method: 'PATCH',
+    url: '/mp/v1_0/user/photo',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    data: {
+      photo
+    }
+  })
+}
+
+// 编辑用户资料
+export const updateUserInfo = data => {
+  return request({
+    method: 'PATCH',
+    url: 'mp/v1_0/user/profile',
+    data
+  })
+}

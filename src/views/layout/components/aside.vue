@@ -11,7 +11,7 @@
       <div :class="{
         asideLogo: !isCollapse,
         noLogo: isCollapse
-        }"></div>
+      }"></div>
       <el-menu-item index="/">
         <i class="el-icon-s-home"></i>
         <span slot="title">首页</span>
@@ -72,6 +72,7 @@ export default {
       }
       .el-menu-item {
         color: #fff;
+        padding-right: 50px;
       }
     }
   }

@@ -69,7 +69,7 @@
           <el-table-column
             prop="cover"
             label="封面"
-            width="180">
+            width="100">
              <template slot-scope="scope">
                 <el-image
                   style="width: 100px"
@@ -87,7 +87,8 @@
           </el-table-column>
           <el-table-column
             prop="status"
-            label="状态">
+            label="状态"
+            width="150">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.status === 0">草稿</el-tag>
               <el-tag v-else-if="scope.row.status === 1" type="info">待审核</el-tag>
@@ -98,13 +99,14 @@
           </el-table-column>
           <el-table-column
             prop="pubdate"
-            label="发布时间">
+            label="发布时间"
+            width="180">
           </el-table-column>
           <el-table-column
             prop="address"
             label="操作">
             <template slot-scope="scope">
-              <el-button type="primary" icon="el-icon-edit" circle></el-button>
+              <el-button type="primary" icon="el-icon-edit" circle @click="$router.push('/publish?id='+scope.row.id)"></el-button>
               <el-button @click="onDeleteArtcile(scope.row.id)" type="danger" icon="el-icon-delete" circle></el-button>
             </template>
           </el-table-column>

@@ -6,6 +6,10 @@ import Layout from '@/views/layout'
 import Home from '@/views/home'
 import Article from '@/views/article'
 import Image from '@/views/image'
+import Publish from '@/views/publish'
+import Comment from '@/views/comment'
+import Fans from '@/views/fans'
+import Settings from '@/views/settings'
 
 Vue.use(VueRouter)
 
@@ -33,6 +37,26 @@ const routes = [
         path: '/image',
         name: 'image',
         component: Image
+      },
+      {
+        path: '/publish',
+        name: 'publish',
+        component: Publish
+      },
+      {
+        path: '/comment',
+        name: 'comment',
+        component: Comment
+      },
+      {
+        path: '/fans',
+        name: 'fans',
+        component: Fans
+      },
+      {
+        path: '/settings',
+        name: 'settings',
+        component: Settings
       }
     ]
   }
