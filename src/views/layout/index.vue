@@ -21,11 +21,11 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </div>
             <el-dropdown-menu style="margin-top: 20px;" slot="dropdown">
-              <el-dropdown-item>
+              <el-dropdown-item @click.native="$router.push('settings')">
                 <i class="el-icon-setting"></i>
                 个人设置
               </el-dropdown-item>
-              <el-dropdown-item>
+              <el-dropdown-item @click.native="onLogout">
                 <i class="el-icon-unlock"></i>
                 退出登录
               </el-dropdown-item>
@@ -69,6 +69,23 @@ export default {
       getUserProfile().then(res => {
         // 获取返回的用户数据
         this.user = res.data.data
+      })
+    },
+    onLogout () {
+      this.$confirm('此操作将退出, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 清除用户登录状态
+        window.localStorage.removeItem('user')
+        // 跳转登录页面
+        this.$router.push('/login')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
       })
     }
   }

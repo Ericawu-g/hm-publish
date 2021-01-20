@@ -9,7 +9,7 @@
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
-        <el-button size="small" type="success" @click="dialogVisible = true">添加素材</el-button>
+        <el-button v-if="isShowAdd" size="small" type="success" @click="dialogVisible = true">添加素材</el-button>
       </div>
 
     <!-- 中间图片 -->
@@ -21,7 +21,9 @@
         :md="6"
         :lg="4"
         v-for="(image, index) in images"
-        :key="index">
+        :key="index"
+        @click.native="selected = index"
+      >
         <el-image
           style="height: 152px;"
           :src="image.url"
@@ -29,6 +31,7 @@
           lazy
         >
         </el-image>
+        <div class="selected" v-if="isShowSelected && selected === index"></div>
         <div class="image-action" v-if="isShowAction">
           <!-- <i
             :class="{
@@ -114,6 +117,16 @@ export default {
     isShowAction: {
       type: Boolean, // 布尔值
       default: true // 默认值
+    },
+    // 是否显示添加素材
+    isShowAdd: {
+      type: Boolean, // 布尔值
+      default: true // 默认值
+    },
+    // 是否展示选择
+    isShowSelected: {
+      type: Boolean, // 布尔值
+      default: false // 默认值
     }
   },
   data () {
@@ -122,6 +135,7 @@ export default {
       totalCount: 0, // 文章总条数
       pageSize: 10, // 每页数量
       page: 1, // 默认第一页
+      selected: null, // 选中的索引
       collect: false, // 默认查询全部图片
       images: [], // 图片素材列表
       dialogVisible: false, // 是否显示添加素材对话框
@@ -253,5 +267,17 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+.selected {
+  background: url('./selected.png') no-repeat;
+  background-size: cover;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

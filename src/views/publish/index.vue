@@ -20,7 +20,7 @@
           <el-input v-model="article.title"></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="content">
-          <el-input type="textarea" v-model="article.content"></el-input>
+          <el-tiptap lang="zh" height="400" v-model="article.content" :extensions="extensions"></el-tiptap>
         </el-form-item>
         <el-form-item label="封面">
           <el-radio-group v-model="article.cover.type">
@@ -59,10 +59,31 @@
 <script>
 import { getChannels, getArticle, editArticle, publishArticle } from '@/api/article'
 import UploadCover from './components/upload-cover'
+import {
+  ElementTiptap,
+  // 需要的 extensions
+  Doc,
+  Text,
+  Paragraph,
+  Heading,
+  Bold,
+  Underline,
+  Italic,
+  Strike,
+  ListItem,
+  BulletList,
+  OrderedList,
+  TodoItem,
+  TodoList,
+  Image
+} from 'element-tiptap'
+import 'element-tiptap/lib/index.css'
+import { uploadImages } from '@/api/image'
 
 export default {
   name: 'PublishIndex',
   components: {
+    'el-tiptap': ElementTiptap,
     UploadCover
   },
   data () {
@@ -78,6 +99,34 @@ export default {
         },
         channel_id: null // 频道
       },
+      extensions: [
+        new Doc(),
+        new Text(),
+        new Paragraph(),
+        new Heading({ level: 5 }),
+        new Bold({ bubble: true }), // 在气泡菜单中渲染菜单按钮
+        new Underline({ bubble: true, menubar: false }), // 在气泡菜单而不在菜单栏中渲染菜单按钮
+        new Italic(),
+        new Strike(),
+        new ListItem(),
+        new BulletList(),
+        new OrderedList(),
+        new TodoItem(),
+        new TodoList(),
+        new Image({
+          // 默认会把图片生成base64字符串和内容储存在一起
+          // 如果需要自定义图片上传
+          uploadRequest (file) {
+            // 如果接口要求content-type是multipart/form-data，
+            // 则请求体必须使用FormData
+            const fd = new FormData()
+            fd.append('image', file)
+            return uploadImages(fd).then(res => {
+              return res.data.data.url
+            })
+          }
+        })
+      ],
       rules: {
         title: [
           { required: true, message: '请输入文章标题', trigger: 'blur' },

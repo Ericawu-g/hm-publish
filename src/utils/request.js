@@ -1,6 +1,7 @@
 import axios from 'axios'
+import { Message } from 'element-ui'
 import JSONbig from 'json-bigint'
-// import router from '@/router'
+import router from '@/router'
 
 const request = axios.create({
   baseURL: 'http://api-toutiao-web.itheima.net/', // 请求基础路径
@@ -28,5 +29,25 @@ request.interceptors.request.use(function (config) {
 })
 
 // 响应拦截器
-
+request.interceptors.response.use(function (response) {
+  return response
+}, function (error) {
+  if (error.response && error.response.status === 401) {
+    window.localStorage.removeItem('user')
+    router.push('/login')
+    Message.error('登录状态无效，请重新登录')
+  } else if (error.response.status === 403) {
+    // token未携带或已过期
+    Message({
+      type: 'warning',
+      message: '没有操作权限'
+    })
+  } else if (error.response.status === 400) {
+    // 客户端参数错误
+    Message.error('参数错误，请检查请求参数')
+  } else if (error.response.status >= 500) {
+    Message.error('服务端内部错误，请稍后重试')
+  }
+  return Promise.rejext(error)
+})
 export default request

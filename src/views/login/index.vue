@@ -8,7 +8,6 @@
         :model="user"
         ref="login-form"
         :rules="formRules"
-        label-width="100px"
         class="login-form"
       >
         <el-form-item label="" prop="mobile">
@@ -19,7 +18,7 @@
           <el-input v-model="user.code" placeholder="请输入验证码"></el-input>
         </el-form-item>
         <el-form-item label="" prop="agree">
-            <el-checkbox label="" v-loading.fullscreen.lock="isLoading">我已阅读并同意用户协议和隐私条款</el-checkbox>
+            <el-checkbox label="" v-model="user.agree">我已阅读并同意用户协议和隐私条款</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -42,7 +41,8 @@ export default {
     return {
       user: {
         mobile: '13911111111', // 手机号
-        code: '246810' // 验证码
+        code: '246810', // 验证码
+        agree: false // 是否同意协议
       },
       isLoading: false, // 默认关闭loading层
       formRules: {
@@ -57,7 +57,7 @@ export default {
         agree: [
           {
             validator: (rule, value, callback) => {
-              if (!value) {
+              if (value) {
                 callback()
               } else {
                 callback(new Error('请同意用户协议'))
@@ -121,7 +121,7 @@ export default {
   bottom: 0;
   background: url('./login_bg.jpg') no-repeat;
   background-size: cover;
-  display: fixed;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -130,11 +130,11 @@ export default {
     padding: 30px 50px 10px;
     background: #fff;
     .login-head {
-      display: fixed;
+      height: 57px;
+      display: flex;
       justify-content: center;
       .logo {
-        width: 200px;
-        height: 57px;
+        width: 150px;
         background: url('./logo_index.png') no-repeat;
         background-size: contain; // 把图像扩展至最大尺寸，以使宽度和高度 完全适应内容区域
       }

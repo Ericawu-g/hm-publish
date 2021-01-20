@@ -33,13 +33,10 @@ export const deleteImage = (imageId) => {
 }
 
 // 上传用户图片素材
-export const uploadImage = data => {
+export const uploadImages = data => {
   return request({
     method: 'POST',
     url: '/mp/v1_0/user/images',
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
     data
   })
 }
